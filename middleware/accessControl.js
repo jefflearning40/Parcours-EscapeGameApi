@@ -1,10 +1,10 @@
 module.exports = (req, res, next) => {
   const roomId = parseInt(req.params.id);
-  const currentRoom = req.user.currentRoom;
+  const user = req.user;
 
-  if (roomId > currentRoom) {
-    return res.status(403).json({ error: "You haven't reached this room yet." });
+  if (user.currentRoom >= roomId) {
+    next();
+  } else {
+    res.status(403).json({ error: "Access denied" });
   }
-
-  next();
 };
